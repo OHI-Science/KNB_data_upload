@@ -1,4 +1,4 @@
-title <- "Cumulative human impacts: Supplementary data"
+title <- "Cumulative human impacts: change in pressures and cumulative impact (2008 to 2013)"
 creators <- data.frame(
     surname=c("Halpern", "Frazier", "Potapenko", "Casey", "Koenig", "Longo", "Lowndes", "Rockwood", "Selig", "Selkoe", "Walbridge"),
     given=c("Benjamin", "Melanie", "John", "Kenneth", "Kellee", "Catherine", "Julia", "Cotton", "Elizabeth", "Kimberly", "Shaun"),
@@ -11,7 +11,7 @@ in the publication: Halpern et al. 2015. Spatial and temporal changes in cumulat
 on the world's ocean.  
 
 Seven data packages are available for this
-project:  (1) supplementary data (habitat data and other files); (2) raw stressor data (2008 and 2013);  
+project: (1) supplementary data (habitat data and other files); (2) raw stressor data (2008 and 2013);  
 (3) stressor data rescaled by one time period (2008 and 2013, scaled from 0-1); 
 (4) stressor data rescaled by two time periods (2008 and 2013, scaled from 0-1); 
 (5) pressure and cumulative impacts data (2013, all pressures);
@@ -19,10 +19,12 @@ project:  (1) supplementary data (habitat data and other files); (2) raw stresso
 (7) change in pressures and cumulative impact (2008 to 2013).
 All raster files are .tif format and coordinate reference system is mollweide wgs84.
 
-This data package includes 20 habitat rasters (preceeded by hab_) and a 
-vulnerability weighting matrix (csv) that describes the vulnerability of each habitat to each stressor.  
-Also included are an ocean mask raster and a raster of the number of habitats in each raster cell 
-(used to average the habitat vulnerability-weighted stressor intensities)."
+This data package includes rasters of the difference between 2013 and 2008 for each pressure (N=12) and final cumulative impacts data (N=1).  
+These are calculated using data from: pressure and cumulative impacts data (2008 and 2013, subset of pressures updated for both time periods),
+and consequently do not incorporate data from: 
+sea level rise, ocean pollution, invasives, and shipping because these data were not available for 2008.  Data for 2008 and 2013 did not differ for:
+artisanal fishing, inorganic pollution, and ocean acidification."
+
 methodDescription <- "For methods please refer to the paper."
 geo_coverage <- geo_cov("Global", west=-180, east=180, north=90, south=-90)
 temp_coverage <- temp_cov("2008", "2013")

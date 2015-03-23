@@ -1,4 +1,4 @@
-title <- "Cumulative human impacts: Supplementary data"
+title <- "Cumulative human impacts: pressure and cumulative impacts data (2013, all pressures)"
 creators <- data.frame(
     surname=c("Halpern", "Frazier", "Potapenko", "Casey", "Koenig", "Longo", "Lowndes", "Rockwood", "Selig", "Selkoe", "Walbridge"),
     given=c("Benjamin", "Melanie", "John", "Kenneth", "Kellee", "Catherine", "Julia", "Cotton", "Elizabeth", "Kimberly", "Shaun"),
@@ -19,10 +19,15 @@ project:  (1) supplementary data (habitat data and other files); (2) raw stresso
 (7) change in pressures and cumulative impact (2008 to 2013).
 All raster files are .tif format and coordinate reference system is mollweide wgs84.
 
-This data package includes 20 habitat rasters (preceeded by hab_) and a 
-vulnerability weighting matrix (csv) that describes the vulnerability of each habitat to each stressor.  
-Also included are an ocean mask raster and a raster of the number of habitats in each raster cell 
-(used to average the habitat vulnerability-weighted stressor intensities)."
+This data package includes the 2013 pressure and final cumulative impacts data.  The cumulative impacts calculations
+include all the pressures, consequently, this is the most complete data but is not appropriate for comparing to the 2008 data
+(for that use data package: Cumulative human impacts: 2008 and 2013 pressure and cumulative impacts data (subset of pressures)). 
+Pressure data was calculated for each stressor by: (1) multiplying the rescaled stressor (rescaled using only the 2013 data) 
+by each habitat layer and the corresponding stressor/habitat
+vulnerability score (for each stressor this generates: 20 rasters); (2) summing the resulting stressor/habitat/vulnerability rasters (generates 1 raster for each stressor);
+(3) dividing by the number of habitats found in each raster cell layer.  The cumulative impacts was calculated by summing all the pressure rasters. 
+There are N=19 pressure rasters and N=1 cumulative impact raster."
+
 methodDescription <- "For methods please refer to the paper."
 geo_coverage <- geo_cov("Global", west=-180, east=180, north=90, south=-90)
 temp_coverage <- temp_cov("2008", "2013")

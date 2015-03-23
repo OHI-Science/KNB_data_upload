@@ -1,4 +1,4 @@
-title <- "Cumulative human impacts: Supplementary data"
+title <- "Cumulative human impacts: pressure and cumulative impacts data (2008 and 2013, subset of pressures)"
 creators <- data.frame(
     surname=c("Halpern", "Frazier", "Potapenko", "Casey", "Koenig", "Longo", "Lowndes", "Rockwood", "Selig", "Selkoe", "Walbridge"),
     given=c("Benjamin", "Melanie", "John", "Kenneth", "Kellee", "Catherine", "Julia", "Cotton", "Elizabeth", "Kimberly", "Shaun"),
@@ -11,7 +11,7 @@ in the publication: Halpern et al. 2015. Spatial and temporal changes in cumulat
 on the world's ocean.  
 
 Seven data packages are available for this
-project:  (1) supplementary data (habitat data and other files); (2) raw stressor data (2008 and 2013);  
+project: (1) supplementary data (habitat data and other files); (2) raw stressor data (2008 and 2013);  
 (3) stressor data rescaled by one time period (2008 and 2013, scaled from 0-1); 
 (4) stressor data rescaled by two time periods (2008 and 2013, scaled from 0-1); 
 (5) pressure and cumulative impacts data (2013, all pressures);
@@ -19,10 +19,16 @@ project:  (1) supplementary data (habitat data and other files); (2) raw stresso
 (7) change in pressures and cumulative impact (2008 to 2013).
 All raster files are .tif format and coordinate reference system is mollweide wgs84.
 
-This data package includes 20 habitat rasters (preceeded by hab_) and a 
-vulnerability weighting matrix (csv) that describes the vulnerability of each habitat to each stressor.  
-Also included are an ocean mask raster and a raster of the number of habitats in each raster cell 
-(used to average the habitat vulnerability-weighted stressor intensities)."
+This data package includes the 2013 pressure and final cumulative impacts data.  These data do not include pressures: 
+sea level rise, ocean pollution, invasives, and shipping because data was not available for 2008.
+These files should be used for comparisons of 2008 and 2013 data, but it is important to note that they do not include
+all pressures. 
+Pressure data was calculated for each stressor by: (1) multiplying the rescaled stressor (rescaled using the maximum value across both 2008 and 2013 data) 
+by each habitat layer and the corresponding stressor/habitat
+vulnerability score (for each stressor this generates: 20 rasters); (2) summing the resulting stressor/habitat/vulnerability rasters (generates 1 raster for each stressor);
+(3) dividing by the number of habitats found in each raster cell layer.  The cumulative impacts was calculated by summing all the pressure rasters. 
+For both 2008 and 2013, there are N=15 pressure rasters and N=1 cumulative impact raster."
+
 methodDescription <- "For methods please refer to the paper."
 geo_coverage <- geo_cov("Global", west=-180, east=180, north=90, south=-90)
 temp_coverage <- temp_cov("2008", "2013")

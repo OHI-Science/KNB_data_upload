@@ -18,7 +18,14 @@
 
 # To see file (replace ID with the data package ID): 
 # https://dev.nceas.ucsb.edu/knb/d1/mn/v1/meta/urn:uuid:c432b7da-ba91-455b-9fa6-c5af8c24c5d5
-  # http://dev.nceas.ucsb.edu/#view/urn:uuid:6bea95cc-f53e-44e6-a59f-500439e59fb5
+# http://dev.nceas.ucsb.edu/#view/urn:uuid:6bea95cc-f53e-44e6-a59f-500439e59fb5
+
+# To see private files login:
+# https://dev.nceas.ucsb.edu/
+# SIGN IN
+# Username: ohi_collaborators
+# Organization: unaffiliated
+# Password: OHIdata
 
 library(dataone)
 library(datapackage)
@@ -45,8 +52,8 @@ upload_datasets <- function(d, mn, assignDOI=FALSE, metadataFile="SupportingData
     cm <- CertificateManager()
     user <- showClientSubject(cm)
 
-    #for(i in 1:length(d$package)){
-    for(i in 1:2){
+    for(i in 1:length(d$package)){
+    #for(i in 1:2){
       #i=2
       package_data <- d$location[i]
       print(paste("Processing ", package_data))
@@ -118,11 +125,11 @@ upload_datasets <- function(d, mn, assignDOI=FALSE, metadataFile="SupportingData
       message(paste("Uploaded: ", identifier))
       } # end of csv
     
-    setwd("~/upload-datasets")
+    setwd("~/KNB_data_upload")
     } # end of going through files: for(i in 1:length(d$package))
 
     # create metadata for the directory
-    mdfile <- paste0("~/upload-datasets/", metadataFile)
+    mdfile <- paste0("~/KNB_data_upload/", metadataFile)
     success <- source(mdfile, local=FALSE)
 
     # Generate a unique identifier for the object
@@ -166,7 +173,7 @@ upload_datasets <- function(d, mn, assignDOI=FALSE, metadataFile="SupportingData
 #' Create a geographic coverage element from a description and bounding coordinates
 geo_cov <- function(geoDescription, west, east, north, south) {
     bc <- new("boundingCoordinates", westBoundingCoordinate=west, eastBoundingCoordinate=east, northBoundingCoordinate=north, southBoundingCoordinate=south)
-    geoDescription="Southeast Alaska"
+    geoDescription="Global Oceans"
     gc <- new("geographicCoverage", geographicDescription=geoDescription, boundingCoordinates=bc)
     return(gc)
 }
@@ -237,7 +244,7 @@ creator <- new("ListOfcreator", lapply(as.list(with(creators, paste(given, " ", 
 }
 
 #' Upload an object to a DataONE repository
-upload_object <- function(mn, filename, newid, format, public=TRUE, replicate=FALSE, accessRules=NA) {
+upload_object <- function(mn, filename, newid, format, public=FALSE, replicate=FALSE, accessRules=NA) {
 
     # Ensure the user is logged in before the upload
     cm <- CertificateManager()
@@ -275,43 +282,7 @@ upload_object <- function(mn, filename, newid, format, public=TRUE, replicate=FA
 ##### start of generating the data:
 
 allFiles <- read.csv("pressures_data_organization.csv", stringsAsFactors=FALSE)
-
-## Package: SupportingData 
-setwd("~/upload-datasets")
-packageData <- "SupportingData"
-d <- allFiles %>%
-  filter(package==packageData) 
-#%>%
-#  filter(data != "habitat_x_pressure")  ## for now, need to figure out how to load this
-
-#' main method to iterate across directories, uploading each data set
-    cn <- CNode("STAGING2")                     # Use Testing repository
-    mn <- getMNode(cn, "urn:node:mnTestKNB")    # Use Testing repository
-    #cn <- CNode()                               # Use Production repository
-    #mn <- getMNode(cn, "urn:node:KNB")          # Use Production repository
-
-    # Set permissions so that any member of chi-collaborators has read access and mfrazier has
-    # every access: "changePermission" includes "read" and "write".
-    # Note: We have to explicitly set access for mfrazer (KNB id) because data is submitted using
-    # the DataONE id and that uid is used for the 'rightsholder'. With the permission 'changePermission',
-    # mfrazier can change each dataset to 'public "read"' in the future.
-    accessRules <- data.frame(subject=c("cn=chi-collaborators,o=unaffiliated,dc=ecoinformatics,dc=org", 
-                                        "uid=frazier,o=unaffiliated,dc=ecoinformatics,dc=org"), 
-                              permission=c("read", 
-                                           "changePermission"))
-
-upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
-
-# last run: https://dev.nceas.ucsb.edu/#view/urn:uuid:db921899-ff75-44d6-a029-519560aa884c
-
-
-## Package: RawData 
-setwd("~/upload-datasets")
-packageData <- "RawData"
-d <- allFiles %>%
-  filter(package==packageData) 
-#%>%
-#  filter(data != "habitat_x_pressure")  ## for now, need to figure out how to load this
+setwd("~/KNB_data_upload")
 
 #' main method to iterate across directories, uploading each data set
 cn <- CNode("STAGING2")                     # Use Testing repository
@@ -325,10 +296,95 @@ mn <- getMNode(cn, "urn:node:mnTestKNB")    # Use Testing repository
 # the DataONE id and that uid is used for the 'rightsholder'. With the permission 'changePermission',
 # mfrazier can change each dataset to 'public "read"' in the future.
 accessRules <- data.frame(subject=c("cn=chi-collaborators,o=unaffiliated,dc=ecoinformatics,dc=org", 
-                                    "uid=frazier,o=unaffiliated,dc=ecoinformatics,dc=org"), 
+                                    "uid=mfrazier,o=unaffiliated,dc=ecoinformatics,dc=org",
+                                    "uid=ohi_collaborators,o=unaffiliated,dc=ecoinformatics,dc=org"), 
                           permission=c("read", 
-                                       "changePermission"))
+                                       "changePermission",
+                                       "read"))
+
+
+
+#################################
+## Package: SupportingData 
+packageData <- "SupportingData"
+d <- allFiles %>%
+  filter(package==packageData) 
 
 upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
-## last run: https://dev.nceas.ucsb.edu/#view/urn:uuid:13b1c22e-9142-4d31-a659-b739068595b4
 
+# https://dev.nceas.ucsb.edu/#view/urn:uuid:c85c84bc-9059-4980-a64a-d23db6c0eddd
+# Uploaded metadata with id: urn:uuid:c85c84bc-9059-4980-a64a-d23db6c0eddd
+# Uploaded data package with id: urn:uuid:a9e1eec6-d645-498e-a8db-1709acdd7aae
+
+
+
+
+#############################################################
+## Package: RawData 
+packageData <- "RawData"
+d <- allFiles %>%
+  filter(package==packageData) 
+
+upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
+## https://dev.nceas.ucsb.edu/#view/urn:uuid:ed24524b-5685-4aca-8631-d7a65a1c9215
+# Uploaded metadata with id: urn:uuid:ed24524b-5685-4aca-8631-d7a65a1c9215
+# Uploaded data package with id: urn:uuid:58b17c12-3317-4c89-992d-c935d3e71d92
+
+
+#############################################################
+## Package: RescaledOneTimePeriod 
+packageData <- "RescaledOneTimePeriod"
+d <- allFiles %>%
+  filter(package==packageData) 
+
+upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
+## https://dev.nceas.ucsb.edu/#view/urn:uuid:e1a224f4-cfbc-4e9b-bff6-d29a9f6335a2
+# Uploaded metadata with id: urn:uuid:e1a224f4-cfbc-4e9b-bff6-d29a9f6335a2
+# Uploaded data package with id: urn:uuid:e3320faf-a75d-47c3-aa71-fb6d97013397
+
+
+#############################################################
+## Package: RescaledTwoTimePeriod 
+packageData <- "RescaledTwoTimePeriod"
+d <- allFiles %>%
+  filter(package==packageData) 
+
+upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
+## https://dev.nceas.ucsb.edu/#view/urn:uuid:306c3076-7fe7-4ba7-b8f7-4b416b0d07f3
+# Uploaded metadata with id: urn:uuid:306c3076-7fe7-4ba7-b8f7-4b416b0d07f3
+# Uploaded data package with id: urn:uuid:3b395247-7fd8-4ae1-b5f3-08bee1dd1d95
+
+
+#############################################################
+## Package: ModeledOneTimePeriod 
+packageData <- "ModeledOneTimePeriod"
+d <- allFiles %>%
+  filter(package==packageData) 
+
+upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
+## https://dev.nceas.ucsb.edu/#view/urn:uuid:c9b71add-674c-43aa-bffd-405c53943eaa
+# Uploaded metadata with id: urn:uuid:c9b71add-674c-43aa-bffd-405c53943eaa
+# Uploaded data package with id: urn:uuid:9adf1bc1-48c3-497e-a7cd-8bb497c9a7e1
+
+
+#############################################################
+## Package: ModeledTwoTimePeriod 
+packageData <- "ModeledTwoTimePeriod"
+d <- allFiles %>%
+  filter(package==packageData) 
+
+upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
+## https://dev.nceas.ucsb.edu/#view/urn:uuid:3c8254ba-7aa1-4501-a789-59cf90e2b3b8
+# Uploaded metadata with id: urn:uuid:3c8254ba-7aa1-4501-a789-59cf90e2b3b8
+# Uploaded data package with id: urn:uuid:8124d81e-e36f-4094-9395-be244cad6c53
+
+#############################################################
+## Package: DifferenceData 
+packageData <- "DifferenceData"
+d <- allFiles %>%
+  filter(package==packageData) 
+
+upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
+## https://dev.nceas.ucsb.edu/#view/urn:uuid:8413c401-eb07-4090-a593-00cb6c5a7701
+# Uploaded metadata with id: urn:uuid:8413c401-eb07-4090-a593-00cb6c5a7701
+# Uploaded data package with id: urn:uuid:52f9c602-b0a2-47ea-af3b-ccbcf4026a54
