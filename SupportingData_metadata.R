@@ -7,11 +7,11 @@ creators <- data.frame(
             'shaun.walbridge@gmail.com'),
     stringsAsFactors=FALSE)
 abstract <- "This is a portion of the data used to calculate 2008 and 2013 cumulative human impacts  
-in the publication: Halpern et al. 2015. Spatial and temporal changes in cumulative human impacts
-on the world's ocean.  
+in: Halpern et al. 2015. Spatial and temporal changes in cumulative human impacts on the world's ocean.  
 
-Seven data packages are available for this
-project:  (1) supplementary data (habitat data and other files); (2) raw stressor data (2008 and 2013);  
+Seven data packages are available for this project:  
+(1) supplementary data (habitat data and other files); 
+(2) raw stressor data (2008 and 2013);  
 (3) stressor data rescaled by one time period (2008 and 2013, scaled from 0-1); 
 (4) stressor data rescaled by two time periods (2008 and 2013, scaled from 0-1); 
 (5) pressure and cumulative impacts data (2013, all pressures);
@@ -19,10 +19,16 @@ project:  (1) supplementary data (habitat data and other files); (2) raw stresso
 (7) change in pressures and cumulative impact (2008 to 2013).
 All raster files are .tif format and coordinate reference system is mollweide wgs84.
 
-This data package includes 20 habitat rasters (preceeded by hab_) and a 
-vulnerability weighting matrix (csv) that describes the vulnerability of each habitat to each stressor.  
+Here is an overview of the calculations:
+Raw stressor data -> rescaled stressor data (values between 0-1) -> 
+pressure data (stressor data after adjusting for habitat/pressure vulnerability) -> 
+cumulative impact (sum of pressure data) -> difference between 2008 and 2013 pressure and cumulative impact data. 
+
+This data package includes 20 habitat rasters (preceded by hab_) and a vulnerability 
+weighting matrix (csv) that describes the vulnerability of each habitat to each stressor.  
 Also included are an ocean mask raster and a raster of the number of habitats in each raster cell 
 (used to average the habitat vulnerability-weighted stressor intensities)."
+
 methodDescription <- "For methods please refer to the paper."
 geo_coverage <- geo_cov("Global", west=-180, east=180, north=90, south=-90)
 temp_coverage <- temp_cov("2008", "2013")

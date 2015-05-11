@@ -9,10 +9,10 @@
 #
 # Matt Jones 2015-02-09
 
-# Download and save permissions file
+# Download, run, and then save permissions file
 # https://cilogon.org/?skin=DataONE
 # choose google
-# launch java file and save file
+# launch java file, copy location of certificate, change name, and save file
 # file.remove("../../../tmp/x509up_u1009")
 # file.copy(from="x509up_u1009", to= "../../../tmp")
 
@@ -75,6 +75,7 @@ upload_datasets <- function(d, mn, assignDOI=FALSE, metadataFile="SupportingData
       #do='ocean_mask' ## when i=3 above
       #do='beach_lzw'     ##when i=1 above
       # do='oil_rigs'  ## when i=2 above and package = RawData
+      # do="habitat_num"
         prefix=d$prefix[i]
         suffix=d$suffix[i]
     
@@ -90,7 +91,8 @@ upload_datasets <- function(d, mn, assignDOI=FALSE, metadataFile="SupportingData
         fq_zipfile <- normalizePath(zipfile)
   
         # Generate a unique identifier for the object
-        identifier <- paste0("urn:uuid:", UUIDgenerate())
+        #identifier <- paste0("urn:uuid:", UUIDgenerate())
+      identifier <- paste(gsub('.zip', "", zipfile), format(Sys.time(), "%Y%m%d%H%M%S"), sep="_")
 
         # upload data zip to the data repository
         identifier <- upload_object(mn, zipfile, identifier, format, accessRules=accessRules)
@@ -107,12 +109,14 @@ upload_datasets <- function(d, mn, assignDOI=FALSE, metadataFile="SupportingData
     } # end of zipping .tif files for: (do in do_list)
     } # end of .tif data type: if(d$type=="tif")
     
+    
     if(d$type[i]=="csv"){
       format <- "csv"  
       setwd(package_data)        
       # Generate a unique identifier for the object
-      identifier <- paste0("urn:uuid:", UUIDgenerate())
+#      identifier <- paste0("urn:uuid:", UUIDgenerate())
       fileName <- d$filename[i]
+      identifier <- paste0(gsub(".csv", '', fileName), '_', format(Sys.time(), "%Y%m%d%H%M%S"), ".csv")
       # upload data zip to the data repository
       identifier <- upload_object(mn, fileName, identifier, format, accessRules=accessRules)
       fq_file <- normalizePath(fileName)
