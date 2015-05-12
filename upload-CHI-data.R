@@ -289,10 +289,10 @@ allFiles <- read.csv("pressures_data_organization.csv", stringsAsFactors=FALSE)
 setwd("~/KNB_data_upload")
 
 #' main method to iterate across directories, uploading each data set
-cn <- CNode("STAGING2")                     # Use Testing repository
-mn <- getMNode(cn, "urn:node:mnTestKNB")    # Use Testing repository
-#cn <- CNode()                               # Use Production repository
-#mn <- getMNode(cn, "urn:node:KNB")          # Use Production repository
+# cn <- CNode("STAGING2")                     # Use Testing repository
+# mn <- getMNode(cn, "urn:node:mnTestKNB")    # Use Testing repository
+cn <- CNode()                               # Use Production repository
+mn <- getMNode(cn, "urn:node:KNB")          # Use Production repository
 
 # Set permissions so that any member of chi-collaborators has read access and mfrazier has
 # every access: "changePermission" includes "read" and "write".
@@ -314,7 +314,9 @@ packageData <- "SupportingData"
 d <- allFiles %>%
   filter(package==packageData) 
 
-upload_datasets(d, mn, assignDOI=FALSE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
+upload_datasets(d, mn, assignDOI=TRUE, metadataFile=paste0(packageData, "_metadata.R"), accessRules=accessRules)
+
+## May 11 2015: https://knb.ecoinformatics.org/#view/doi:10.5063/F19Z92TW
 
 # https://dev.nceas.ucsb.edu/#view/urn:uuid:c85c84bc-9059-4980-a64a-d23db6c0eddd
 # Uploaded metadata with id: urn:uuid:c85c84bc-9059-4980-a64a-d23db6c0eddd
