@@ -22,7 +22,7 @@ All raster files are .tif format and coordinate reference system is mollweide wg
 Here is an overview of the calculations:
 Raw stressor data -> rescaled stressor data (values between 0-1) -> 
 pressure data (stressor data after adjusting for habitat/pressure vulnerability) -> 
-cumulative impact (sum of pressure data) -> difference between 2008 and 2013 pressure and cumulative impact data 
+cumulative impact (sum of pressure data) -> difference between 2008 and 2013 pressure and cumulative impact data. 
 
 This data package includes rasters of the difference between 2013 and 2008 for each pressure (N=12) and final cumulative impacts data (N=1).  
 These are calculated using data from: pressure and cumulative impacts data (2008 and 2013, subset of pressures updated for both time periods),

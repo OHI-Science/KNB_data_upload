@@ -26,14 +26,17 @@
 # Username: ohi_collaborators
 # Organization: unaffiliated
 # Password: OHIdata
-
+library(devtools)
 library(dataone)
 library(datapackage)
+library(PKI)
 library(uuid)
 library(XML)
 library(EML)
 library(digest)
 library(dplyr)
+#devtools::install_github("s-u/PKI", dependencies=TRUE)
+
 
 #' Iterate over the data sets in a directory.
 #' This function is passed a directory \code{'d'}, which contains a set of subdirectories,
